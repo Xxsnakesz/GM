@@ -1,10 +1,11 @@
 
+
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { Project, ProjectStatus } from '../types';
 import { StorageService } from '../services/storageService';
 import { GeminiService } from '../services/geminiService';
-import { MapPin, Calendar, DollarSign, ArrowLeft, Edit, Trash2, Sparkles, Mail, User, Loader2 } from 'lucide-react';
+import { MapPin, Calendar, DollarSign, ArrowLeft, Edit, Trash2, Sparkles, Mail, User, Loader2, Tag } from 'lucide-react';
 
 const ProjectDetail = () => {
   const { id } = useParams();
@@ -94,7 +95,7 @@ const ProjectDetail = () => {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 py-6 border-t border-b border-gray-100">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 py-6 border-t border-b border-gray-100">
              <div>
                 <div className="flex items-center gap-2 text-gray-500 text-sm mb-1">
                     <DollarSign size={16} /> Value
@@ -106,6 +107,12 @@ const ProjectDetail = () => {
                     <Calendar size={16} /> Start Date
                 </div>
                 <div className="font-semibold text-gray-900">{new Date(project.startDate).toLocaleDateString('id-ID', { dateStyle: 'long'})}</div>
+             </div>
+             <div>
+                <div className="flex items-center gap-2 text-gray-500 text-sm mb-1">
+                    <Tag size={16} /> Type
+                </div>
+                <div className="font-semibold text-gray-900">{project.type}</div>
              </div>
              <div>
                 <div className="flex items-center gap-2 text-gray-500 text-sm mb-1">

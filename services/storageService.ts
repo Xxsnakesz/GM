@@ -1,6 +1,6 @@
 
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
-import { Project, Customer, Employee, ProjectStatus } from '../types';
+import { Project, Customer, Employee, ProjectStatus, ProjectType } from '../types';
 
 const STORAGE_KEYS = {
   PROJECTS: 'pt_gm_projects',
@@ -10,9 +10,8 @@ const STORAGE_KEYS = {
 };
 
 // --- Configuration ---
-// REMOVED SUPABASE CREDENTIALS FOR MOCK MODE
-const supabaseUrl = "";
-const supabaseKey = "";
+const supabaseUrl = "https://xlqrxjabcnfhkrxlfubl.supabase.co";
+const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhscXJ4amFiY25maGtyeGxmdWJsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjM5NjEwNzQsImV4cCI6MjA3OTUzNzA3NH0.bNT8HnlloYweLR4bH_y8rEg4-d6kl_axcyEfS34u8aA";
 
 // Check if Supabase is configured
 const isSupabaseConfigured = !!(supabaseUrl && supabaseKey);
@@ -38,6 +37,7 @@ const mapProjectFromDb = (dbProject: any): Project => ({
   endDate: dbProject.end_date,
   status: dbProject.status as ProjectStatus,
   value: Number(dbProject.value),
+  type: dbProject.type as ProjectType,
   description: dbProject.description,
   notes: dbProject.notes,
   team: dbProject.team || [],
@@ -46,7 +46,7 @@ const mapProjectFromDb = (dbProject: any): Project => ({
 
 // Map App camelCase to DB snake_case
 const mapProjectToDb = (project: Partial<Project>): any => {
-  const { id, name, customerId, customerName, location, startDate, endDate, status, value, description, notes, team, updatedAt } = project;
+  const { id, name, customerId, customerName, location, startDate, endDate, status, value, type, description, notes, team, updatedAt } = project;
   return {
     ...(id && { id }), // Only include ID if it exists (for updates)
     name,
@@ -57,6 +57,7 @@ const mapProjectToDb = (project: Partial<Project>): any => {
     end_date: endDate,
     status,
     value,
+    type,
     description,
     notes,
     team,
@@ -127,6 +128,7 @@ const seedData = () => {
         startDate: '2024-01-15',
         status: ProjectStatus.ON_PROGRESS,
         value: 150000000,
+        type: ProjectType.MIGRATION,
         description: 'Migrating legacy ERP to Cloud.',
         notes: 'Waiting for final data validation from client side.',
         team: [{ role: 'PM', name: 'Alice PM', employeeId: 'e1' }, { role: 'Engineer', name: 'Charlie Tech', employeeId: 'e3' }],

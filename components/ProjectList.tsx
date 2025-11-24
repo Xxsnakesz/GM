@@ -1,9 +1,10 @@
 
+
 import React, { useState, useEffect } from 'react';
 import { Project, ProjectStatus } from '../types';
 import { StorageService } from '../services/storageService';
 import { Link } from 'react-router-dom';
-import { Search, Filter, ArrowUpRight, Plus, AlertCircle, CheckCircle, Clock, PauseCircle, Loader2 } from 'lucide-react';
+import { Search, Filter, ArrowUpRight, Plus, AlertCircle, CheckCircle, Clock, PauseCircle, Loader2, Tag } from 'lucide-react';
 
 const StatusBadge = ({ status }: { status: ProjectStatus }) => {
   const styles = {
@@ -128,6 +129,7 @@ const ProjectList = () => {
               <tr>
                 <th className="px-6 py-4 font-medium">Project Name</th>
                 <th className="px-6 py-4 font-medium">Customer</th>
+                <th className="px-6 py-4 font-medium">Type</th>
                 <th className="px-6 py-4 font-medium">Status</th>
                 <th className="px-6 py-4 font-medium text-right">Value</th>
                 <th className="px-6 py-4 font-medium text-right">Action</th>
@@ -141,6 +143,11 @@ const ProjectList = () => {
                       <div className="font-medium text-gray-900">{project.name}</div>
                     </td>
                     <td className="px-6 py-4 text-gray-600">{project.customerName}</td>
+                    <td className="px-6 py-4 text-gray-600">
+                      <span className="flex items-center gap-1.5 text-xs text-gray-500 bg-gray-100 px-2 py-0.5 rounded">
+                         <Tag size={12} /> {project.type}
+                      </span>
+                    </td>
                     <td className="px-6 py-4">
                       <StatusBadge status={project.status} />
                     </td>
@@ -159,7 +166,7 @@ const ProjectList = () => {
                 ))
               ) : (
                 <tr>
-                  <td colSpan={5} className="px-6 py-12 text-center text-gray-500">
+                  <td colSpan={6} className="px-6 py-12 text-center text-gray-500">
                     <div className="flex flex-col items-center justify-center gap-2">
                         <AlertCircle className="text-gray-300" size={32} />
                         <p>No projects found matching your filters.</p>

@@ -1,9 +1,19 @@
 
+
 export enum ProjectStatus {
   PLANNING = 'Planning',
   ON_PROGRESS = 'On Progress',
   DONE = 'Done',
   HOLD = 'On Hold'
+}
+
+export enum ProjectType {
+  TURNKEY = 'Turnkey',
+  CONSULTING = 'Consulting',
+  MANAGED_SERVICES = 'Managed Services',
+  HARDWARE = 'Hardware',
+  LICENSE = 'License',
+  MIGRATION = 'Migration'
 }
 
 export interface Customer {
@@ -42,6 +52,7 @@ export interface Project {
   endDate?: string;
   status: ProjectStatus;
   value: number;
+  type: ProjectType | string;
   description: string;
   notes: string;
   team: TeamMember[];

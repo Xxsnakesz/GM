@@ -1,4 +1,5 @@
 
+
 import { GoogleGenAI } from "@google/genai";
 import { Project } from "../types";
 
@@ -13,6 +14,7 @@ export const GeminiService = {
       name: p.name,
       status: p.status,
       value: p.value,
+      type: p.type,
       notes: p.notes
     }));
 
@@ -51,6 +53,7 @@ export const GeminiService = {
       - Customer: ${project.customerName}
       - Status: ${project.status}
       - Value: ${project.value}
+      - Type: ${project.type}
       - Current Notes: ${project.notes}
       
       The email should be addressed to the stakeholders. Highlight progress and any blockers.
