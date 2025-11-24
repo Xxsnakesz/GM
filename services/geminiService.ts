@@ -1,19 +1,18 @@
+
 import { GoogleGenAI } from "@google/genai";
 import { Project } from "../types";
 
-const apiKey = process.env.API_KEY || '';
-const ai = new GoogleGenAI({ apiKey });
+const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
 
 export const GeminiService = {
   async getPortfolioAnalysis(projects: Project[]): Promise<string> {
-    if (!apiKey) return "API Key not configured.";
+    if (!process.env.API_KEY) return "API Key not configured.";
 
     // Simplify data for the prompt to save tokens
     const projectSummary = projects.map(p => ({
       name: p.name,
       status: p.status,
       value: p.value,
-      type: p.type,
       notes: p.notes
     }));
 
@@ -43,7 +42,7 @@ export const GeminiService = {
   },
 
   async getProjectReport(project: Project): Promise<string> {
-    if (!apiKey) return "API Key not configured.";
+    if (!process.env.API_KEY) return "API Key not configured.";
 
     const prompt = `
       Draft a short, professional status update email for the project "${project.name}".

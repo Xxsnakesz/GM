@@ -1,6 +1,6 @@
 
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
-import { Project, Customer, Employee, ProjectStatus, ProjectType } from '../types';
+import { Project, Customer, Employee, ProjectStatus } from '../types';
 
 const STORAGE_KEYS = {
   PROJECTS: 'pt_gm_projects',
@@ -10,15 +10,19 @@ const STORAGE_KEYS = {
 };
 
 // --- Configuration ---
-const supabaseUrl = process.env.SUPABASE_URL;
-const supabaseKey = process.env.SUPABASE_ANON_KEY;
+// REMOVED SUPABASE CREDENTIALS FOR MOCK MODE
+const supabaseUrl = "";
+const supabaseKey = "";
 
 // Check if Supabase is configured
 const isSupabaseConfigured = !!(supabaseUrl && supabaseKey);
 let supabase: SupabaseClient | null = null;
 
 if (isSupabaseConfigured) {
-  supabase = createClient(supabaseUrl!, supabaseKey!);
+  supabase = createClient(supabaseUrl, supabaseKey);
+  console.log("Supabase Client Initialized");
+} else {
+  console.log("Supabase credentials not found. Using local storage fallback.");
 }
 
 // --- Helper Functions for Data Mapping ---
@@ -34,7 +38,6 @@ const mapProjectFromDb = (dbProject: any): Project => ({
   endDate: dbProject.end_date,
   status: dbProject.status as ProjectStatus,
   value: Number(dbProject.value),
-  type: dbProject.type as ProjectType,
   description: dbProject.description,
   notes: dbProject.notes,
   team: dbProject.team || [],
@@ -43,7 +46,7 @@ const mapProjectFromDb = (dbProject: any): Project => ({
 
 // Map App camelCase to DB snake_case
 const mapProjectToDb = (project: Partial<Project>): any => {
-  const { id, name, customerId, customerName, location, startDate, endDate, status, value, type, description, notes, team, updatedAt } = project;
+  const { id, name, customerId, customerName, location, startDate, endDate, status, value, description, notes, team, updatedAt } = project;
   return {
     ...(id && { id }), // Only include ID if it exists (for updates)
     name,
@@ -54,7 +57,6 @@ const mapProjectToDb = (project: Partial<Project>): any => {
     end_date: endDate,
     status,
     value,
-    type,
     description,
     notes,
     team,
@@ -125,7 +127,6 @@ const seedData = () => {
         startDate: '2024-01-15',
         status: ProjectStatus.ON_PROGRESS,
         value: 150000000,
-        type: ProjectType.SOFTWARE,
         description: 'Migrating legacy ERP to Cloud.',
         notes: 'Waiting for final data validation from client side.',
         team: [{ role: 'PM', name: 'Alice PM', employeeId: 'e1' }, { role: 'Engineer', name: 'Charlie Tech', employeeId: 'e3' }],
@@ -179,6 +180,23 @@ export const StorageService = {
           return mockSession;
         }
         throw new Error('Invalid credentials (Mock: admin@company.com / admin)');
+      }
+    },
+    signUp: async (email: string, password: string) => {
+      if (isSupabaseConfigured && supabase) {
+        const { data, error } = await supabase.auth.signUp({
+            email,
+            password,
+            options: {
+              data: {
+                full_name: 'GM User'
+              }
+            }
+        });
+        if (error) throw error;
+        return data;
+      } else {
+         throw new Error("Supabase not configured. Cannot create users in mock mode.");
       }
     },
     signOut: async () => {

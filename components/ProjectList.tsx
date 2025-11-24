@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Project, ProjectStatus } from '../types';
 import { StorageService } from '../services/storageService';
@@ -138,7 +139,6 @@ const ProjectList = () => {
                   <tr key={project.id} className="hover:bg-gray-50 transition-colors group">
                     <td className="px-6 py-4">
                       <div className="font-medium text-gray-900">{project.name}</div>
-                      <div className="text-xs text-gray-500 mt-0.5">{project.type}</div>
                     </td>
                     <td className="px-6 py-4 text-gray-600">{project.customerName}</td>
                     <td className="px-6 py-4">

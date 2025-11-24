@@ -6,14 +6,6 @@ export enum ProjectStatus {
   HOLD = 'On Hold'
 }
 
-export enum ProjectType {
-  SOFTWARE = 'Software Development',
-  CONSULTING = 'Consulting',
-  INFRASTRUCTURE = 'Infrastructure',
-  MAINTENANCE = 'Maintenance',
-  OTHER = 'Other'
-}
-
 export interface Customer {
   id: string;
   name: string;
@@ -50,7 +42,6 @@ export interface Project {
   endDate?: string;
   status: ProjectStatus;
   value: number;
-  type: ProjectType;
   description: string;
   notes: string;
   team: TeamMember[];

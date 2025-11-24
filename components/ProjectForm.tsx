@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Project, ProjectStatus, ProjectType, Customer, Employee, TeamMember } from '../types';
+import { Project, ProjectStatus, Customer, Employee, TeamMember } from '../types';
 import { StorageService } from '../services/storageService';
 import { Save, X, Loader2, Plus, Trash2 } from 'lucide-react';
 
@@ -23,7 +23,6 @@ const ProjectForm = () => {
     startDate: new Date().toISOString().split('T')[0],
     status: ProjectStatus.PLANNING,
     value: 0,
-    type: ProjectType.SOFTWARE,
     description: '',
     notes: '',
     team: []
@@ -171,20 +170,6 @@ const ProjectForm = () => {
                     <option value="">Select Customer</option>
                     {customers.map(c => (
                         <option key={c.id} value={c.id}>{c.name}</option>
-                    ))}
-                </select>
-            </div>
-
-            <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Project Type</label>
-                <select
-                    name="type"
-                    value={formData.type}
-                    onChange={handleChange}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none bg-white"
-                >
-                    {Object.values(ProjectType).map(t => (
-                        <option key={t} value={t}>{t}</option>
                     ))}
                 </select>
             </div>
